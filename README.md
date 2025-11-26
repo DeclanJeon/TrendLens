@@ -143,16 +143,6 @@ project-root/
 
 -----
 
-### 🔮 Future Enhancements (Improvement Areas)
-
-  * [ ] NLP를 활용한 키워드 분석 기능 추가 (Upgrade `nlpProcessor.js` to handle complex analysis).
-  * [ ] 데이터베이스 연동으로 장기적인 트렌드 분석 (Implement database for long-term data storage).
-  * [ ] 더 많은 지역 지원 (Expand region support).
-  * [ ] 실시간 알림 기능 (Add real-time notifications for trend changes).
-  * [ ] 데이터 내보내기 기능 (CSV, JSON) (Enhance and finalize export features).
-
------
-
 ### 📄 License
 
 This project is licensed under the **MIT License**.
