@@ -1,0 +1,41 @@
+{
+  "name": "youtube-trend-marketer",
+  "version": "2.0.0",
+  "description": "AI-Powered YouTube Trend Analysis",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "nodemon server.js",
+    "dev:client": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.13.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "gsap": "^3.12.5",
+    "marked": "^11.1.1",
+    "node-cache": "^5.1.2",
+    "three": "^0.160.0",
+    "vanta": "^0.5.24",
+    "winston": "^3.18.3",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.11",
+    "vite": "^5.0.0"
+  },
+  "keywords": [
+    "youtube",
+    "ai",
+    "gemini",
+    "trend"
+  ],
+  "author": "TrendLens Team",
+  "license": "MIT"
+}

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrendLens Pro - Market Insight</title>
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="vanta-bg"></div>
+
+    <div class="container">
+        <header class="header">
+            <div class="logo-wrapper">
+                <h1>TrendLens</h1>
+                <span class="badge-ai">PRO</span>
+            </div>
+            <p class="subtitle">YouTube Big Data & Gemini AI-Powered Real-time Marketing Insights</p>
+        </header>
+
+        <main>
+            <section class="controls glass-panel">
+                <div class="control-row primary-row">
+                    <div class="control-group">
+                        <label>TARGET REGION</label>
+                        <div class="toggle-group" id="regionToggle">
+                            <button class="toggle-btn active" data-value="KR">KOREA</button>
+                            <button class="toggle-btn" data-value="US">USA</button>
+                            <button class="toggle-btn" data-value="JP">JAPAN</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>TIMEFRAME</label>
+                        <select id="periodSelect" class="styled-select">
+                            <option value="1w">Last 1 Week</option>
+                            <option value="2w">Last 2 Weeks</option>
+                            <option value="1m">Last 1 Month</option>
+                        </select>
+                    </div>
+                    
+                    <button id="searchBtn" class="primary-btn">
+                        <span class="btn-text">Start Analysis</span>
+                    </button>
+                </div>
+
+                <div id="filterSection" class="control-row secondary-row">
+                    <div class="filter-group">
+                        <label>CATEGORY</label>
+                        <select id="categorySelect" class="styled-select small">
+                            <option value="0">All Categories</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>KEYWORD FILTER</label>
+                        <input type="text" id="keywordInput" class="styled-input" placeholder="Search title, tags...">
+                    </div>
+
+                    <div class="filter-group">
+                        <label>MIN VIEWS: <span id="viewCountLabel">0</span></label>
+                        <input type="range" id="viewCountRange" class="styled-range" min="0" max="5000000" step="50000" value="0">
+                    </div>
+                </div>
+            </section>
+
+            <section id="aiSection" class="ai-section" style="display: none;">
+                <button id="aiTriggerBtn" class="ai-trigger-btn">
+                    <span class="sparkle">✨</span> Analyze with <strong>AI Insights</strong>
+                </button>
+
+                <div id="aiInsightBox" class="ai-insight-box glass-panel">
+                    <div class="ai-header">
+                        <h3>Gemini Market Report</h3>
+                        <button class="close-ai">×</button>
+                    </div>
+                    <div id="aiContent" class="ai-content"></div>
+                </div>
+            </section>
+
+            <section id="keywordCloudSection" class="glass-panel" style="display:none; margin-bottom: 2rem; padding: 1.5rem;">
+                <h3 style="margin-bottom: 1rem; font-size: 1rem; color: var(--text-200);">🔥 Trending Keywords</h3>
+                <div id="keywordContainer" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+            </section>
+
+            <section id="resultsHeader" class="results-header" style="display:none;">
+                <h3 id="resultCount">Total 0 Videos</h3>
+                
+                <div class="export-group">
+                    <span class="export-label">Download:</span>
+                    <button class="export-btn" data-type="csv">CSV</button>
+                    <button class="export-btn" data-type="xlsx">Excel</button>
+                    <button class="export-btn" data-type="json">JSON</button>
+                </div>
+            </section>
+
+            <section id="resultsArea" class="results-grid">
+                <div class="empty-state glass-panel">
+                    <h3>Ready to Analyze</h3>
+                    <p>Select settings and click 'Start Analysis' button.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 TrendLens. Optimized for Marketers.</p>
+        </footer>
+    </div>
+    
+    <div id="promptModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content glass-panel storyboard-modal">
+            <div class="modal-header">
+                <div class="header-info">
+                    <h3>🎬 AI Director's Cut</h3>
+                    <p class="header-sub">Detailed Analysis & Prompts for Generative AI</p>
+                </div>
+                <button class="close-modal">×</button>
+            </div>
+            
+            <div class="modal-tabs">
+                <button class="tab-btn active" data-tab="storyboard">🖼️ Image Storyboard</button>
+                <button class="tab-btn" data-tab="videoscript">🎥 Video Generation Script</button>
+            </div>
+
+            <div class="modal-body">
+                <div id="promptLoading" style="display: none;">
+                    <div class="loader-container">
+                        <div class="loader-3d">
+                            <div class="cube"></div>
+                            <div class="cube"></div>
+                            <div class="cube"></div>
+                        </div>
+                        <p class="loading-text">Analyzing direction, composition, lighting, and styling...<br>(AI Analysis in progress)</p>
+                    </div>
+                </div>
+
+                <div id="tabContent-storyboard" class="tab-content active">
+                    <div id="promptResult" class="storyboard-container" style="display: none;">
+                        <div id="globalStyleCard" class="style-card"></div>
+
+                        <div class="action-bar" style="margin-bottom: 1.5rem; display: flex; justify-content: flex-end;">
+                            <button id="generateImageBtn" class="action-btn primary" style="background: linear-gradient(135deg, #6e8efb, #a777e3);">
+                                ✨ AI Image Generation (Beta)
+                            </button>
+                        </div>
+
+                        <div id="imageResultContainer" class="image-result-container" style="display: none;">
+                            <h3 style="margin-bottom: 1rem; color: var(--text-100); font-size: 1.1rem;">🎨 Generated Storyboard</h3>
+                            <div id="imageGrid" class="image-grid">
+                            </div>
+                        </div>
+
+                        <div id="storyboardGrid" class="storyboard-grid"></div>
+                    </div>
+                </div>
+
+                <div id="tabContent-videoscript" class="tab-content" style="display: none;">
+                    <div id="videoScriptResult" class="script-container" style="display: none;">
+                        <div id="directorNotes" class="style-card video-style"></div>
+                        <div id="scriptTimeline" class="script-timeline"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <span class="tip-text">💡 Tip: Check <strong>Video Script</strong> tab for Sora/Runway prompts.</span>
+                <div class="btn-group">
+                    <button id="copyAllBtn" class="action-btn primary">📋 Copy Current Tab</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="frameSelectionModal" class="modal-overlay" style="display: none; z-index: 10000;">
+        <div class="modal-content glass-panel" style="width: 500px; padding: 30px; text-align: center;">
+            <h3 style="margin-bottom: 15px;">⚡ Shorts Algorithm-Based Generation</h3>
+            <p style="margin-bottom: 25px; color: var(--text-200); line-height: 1.5;">
+                <strong>Based on Viral Shorts Analysis</strong><br>
+                <span style="font-size: 0.85rem;">Optimized for AI video generation (Sora, Runway) with <strong>5-second sequences</strong>.</span>
+            </p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                <button class="primary-btn frame-select-btn" data-duration="25" style="padding: 15px 0;">
+                    <div style="font-size: 1.2rem; font-weight: 800;">⚡ 25초</div>
+                    <div style="font-size: 0.7rem; opacity: 0.8;">5 Scenes (Quick)</div>
+                </button>
+                <button class="primary-btn frame-select-btn" data-duration="40" style="padding: 15px 0;">
+                    <div style="font-size: 1.2rem; font-weight: 800;">🎬 40초</div>
+                    <div style="font-size: 0.7rem; opacity: 0.8;">8 Scenes (Standard)</div>
+                </button>
+                <button class="primary-btn frame-select-btn" data-duration="60" style="padding: 15px 0;">
+                    <div style="font-size: 1.2rem; font-weight: 800;">🎥 60초</div>
+                    <div style="font-size: 0.7rem; opacity: 0.8;">12 Scenes (Story)</button>div>
+                </button>
+            </div>
+            <div style="background: linear-gradient(135deg, #e3f2fd, #bbdefb); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                <h4 style="margin: 0 0 10px 0; color: #1565c0; font-size: 0.9rem;">🔥 Shorts Algorithm Features</h4>
+                <ul style="text-align: left; margin: 0; padding-left: 20px; color: #1565c0; font-size: 0.8rem; line-height: 1.4;">
+                    <li><strong>Hook (First 5s)</strong>: Attention grabbing + Curiosity trigger</li>
+                    <li><strong>Dynamic Pacing</strong>: Fast transitions + Dynamic camera movement</li>
+                    <li><strong>Vertical Format</strong>: 9:16 ratio optimized</li>
+                    <li><strong>Trend Integration</strong>: Success factors from analyzed videos</li>
+                </ul>
+            </div>
+            <p style="font-size: 0.8rem; color: #888;">* Each scene is generated as a 5-second individual prompt.</p>
+        </div>
+    </div>
+    
+    <template id="loaderTemplate">
+        <div class="loader-container glass-panel">
+            <div class="loader-3d">
+                <div class="cube"></div>
+                <div class="cube"></div>
+                <div class="cube"></div>
+            </div>
+            <p class="loading-text">Collecting YouTube data...</p>
+        </div>
+    </template>
+
+    <script type="module" src="/js/app.js"></script>
+</body>
+</html>
